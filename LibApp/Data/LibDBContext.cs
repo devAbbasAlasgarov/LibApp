@@ -12,6 +12,7 @@ namespace LibApp.Data
         }
         public DbSet<Book> Books { get; set; }
         public DbSet<Library> Libraries { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         
     }
 }
