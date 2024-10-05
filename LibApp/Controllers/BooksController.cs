@@ -18,12 +18,17 @@ namespace LibApp.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Book>> PostTodoItem(Book item)
+        [HttpGet]
+        public async Task<ActionResult<List<Book>>> GetBooks()
         {
-            _dbContext.Books.Add(item);
-            await _dbContext.SaveChangesAsync();
-            return Ok(item);
+            var books = await _dbContext.Books.ToListAsync();
+
+            if (books == null)
+            {
+                return NotFound();
+            }
+
+            return books;
         }
 
         [HttpGet("{id}")]
@@ -39,19 +44,12 @@ namespace LibApp.Controllers
             return book;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<Book>>> GetBooks()
+        [HttpPost]
+        public async Task<ActionResult<Book>> PostTodoItem(Book item)
         {
-            var books = await _dbContext.Books.ToListAsync();
-
-            if (books == null)
-            {
-                return NotFound();
-            }
-
-            return books;
+            _dbContext.Books.Add(item);
+            await _dbContext.SaveChangesAsync();
+            return Ok(item);
         }
-
-
     }
 }

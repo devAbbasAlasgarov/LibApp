@@ -2,6 +2,7 @@
 using LibApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibApp.Controllers
 {
@@ -16,12 +17,17 @@ namespace LibApp.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Customer>> PostToDoItem(Customer item )
+        [HttpGet]
+        public async Task<ActionResult<List<Customer>>> GetCustomers()
         {
-            _dbContext.Customers.Add(item);
-            await _dbContext.SaveChangesAsync();
-            return Ok(item);
+            var customers = await _dbContext.Customers.ToListAsync();
+
+            if (customers == null)
+            {
+                return NotFound();
+            }
+
+            return customers;
         }
 
         [HttpGet("{id}")]
@@ -35,6 +41,14 @@ namespace LibApp.Controllers
             }
 
             return customer;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Customer>> PostToDoItem(Customer item)
+        {
+            _dbContext.Customers.Add(item);
+            await _dbContext.SaveChangesAsync();
+            return Ok(item);
         }
     }
 }
