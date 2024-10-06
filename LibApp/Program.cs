@@ -1,6 +1,7 @@
 
 using LibApp.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace LibApp
 {
@@ -38,6 +39,8 @@ namespace LibApp
             app.MapControllers();
 
             app.Run();
+            
+            public record ToDo(int Id, string Name, DateTime DueDate, bool IsCompleted)
         }
     }
 }
